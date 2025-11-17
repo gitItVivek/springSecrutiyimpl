@@ -26,14 +26,9 @@ public class TicketController {
     @PostMapping("/raiseTicket")
     public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        System.out.println("Auth type: " + auth.getClass().getName());
-        System.out.println("Principal type: " + auth.getPrincipal().getClass().getName());
-        System.out.println("Authorities: " + auth.getAuthorities());
-
         User currentUser = getCurrentUser();
         Ticket TicketCreated = ticketService.createTicket(ticket.getTitle(),  ticket.getDescription(),currentUser);
+
         URI uri = URI.create("/flow/tickets/" + TicketCreated.getId());
         System.out.println("uri is:  "+ uri);
         return ResponseEntity.created(uri).body(TicketCreated);
@@ -41,8 +36,14 @@ public class TicketController {
     }
 
     private User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        System.out.println("Auth type: " + auth.getClass().getName());
+        System.out.println("Principal type: " + auth.getPrincipal().getClass().getName());
+        System.out.println("Authorities: " + auth.getAuthorities());
+
+        return (User) auth.getPrincipal();
     }
 
 

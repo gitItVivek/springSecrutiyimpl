@@ -3,6 +3,8 @@ package com.springsecurtiyimpl.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @Setter
@@ -22,6 +24,13 @@ public class Ticket {
 
     @ManyToOne
     private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name="assigned_to_id")
+    private NetOpsMember assignedTo;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime assignedAt;
 
 
 }
