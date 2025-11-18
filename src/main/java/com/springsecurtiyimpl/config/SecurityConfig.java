@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/flow/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .httpBasic(auth->auth.disable())
+                .httpBasic(Customizer.withDefaults())
 
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

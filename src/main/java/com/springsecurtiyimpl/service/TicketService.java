@@ -28,6 +28,7 @@ public class TicketService {
                 .status("OPEN")
                 .createdAt(LocalDateTime.now())
                 .assignedTo(null)
+                .assignedAt(null)
                 .build();
         Ticket ticketRaised = ticketRepository.save(ticket);
 

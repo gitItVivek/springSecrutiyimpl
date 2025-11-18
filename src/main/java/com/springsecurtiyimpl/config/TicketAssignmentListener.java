@@ -1,12 +1,8 @@
 package com.springsecurtiyimpl.config;
 
-import com.springsecurtiyimpl.entity.NetOpsMember;
-import com.springsecurtiyimpl.entity.TicketCount;
 import com.springsecurtiyimpl.entity.TicketCreatedEvent;
-import com.springsecurtiyimpl.repo.TicketCountRepo;
-import com.springsecurtiyimpl.service.TicketAissgnmentService;
+import com.springsecurtiyimpl.service.TicketAssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -17,7 +13,7 @@ public class TicketAssignmentListener {
 
 
     @Autowired
-    TicketAissgnmentService ticketAissgnmentService;
+    TicketAssignmentService ticketAssignmentService;
 
     @EventListener
     @Async
@@ -25,7 +21,7 @@ public class TicketAssignmentListener {
         System.out.println("Event received: Ticket " + event.getTicket().getId() + " created");
 
         try {
-            ticketAissgnmentService.assignTicketWithLeastCount(event.getTicket());
+            ticketAssignmentService.assignTicketWithLeastCount(event.getTicket());
         } catch (Exception e) {
             System.out.println("Error assigning ticket:  " + e.getMessage());
         }

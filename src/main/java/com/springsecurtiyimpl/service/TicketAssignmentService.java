@@ -2,8 +2,6 @@ package com.springsecurtiyimpl.service;
 
 import com.springsecurtiyimpl.entity.NetOpsMember;
 import com.springsecurtiyimpl.entity.Ticket;
-import com.springsecurtiyimpl.entity.TicketCount;
-import com.springsecurtiyimpl.repo.NetOpsUserRepository;
 import com.springsecurtiyimpl.repo.TicketCountRepo;
 import com.springsecurtiyimpl.repo.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,26 +12,27 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
-public class TicketAissgnmentService {
+public class TicketAssignmentService {
 
     @Autowired
     TicketCountRepo ticketCountRepo;
     @Autowired
-    TicketRepository ticketRepo;;
+    TicketRepository ticketRepo;
 
     @Transactional
     public NetOpsMember assignTicketWithLeastCount(Ticket ticket){
         LocalDate today = LocalDate.now();
-        TicketCount rowWithLeastCount  = ticketCountRepo.findLeastLoadedForDate(today);
-        NetOpsMember netOpsMember = rowWithLeastCount.getNetOpsMember();
+        NetOpsMember memberWithLeastCount = ticketCountRepo.findLeastLoadedForDate(today);
+       //NetOpsMember netOpsMember = memberWithLeastCount.getNetOpsMember();
+
         ticket.setAssignedAt(LocalDateTime.now());
-        ticket.setAssignedTo(netOpsMember);
+        ticket.setAssignedTo(memberWithLeastCount);
         ticket.setStatus("Assigned");
         ticketRepo.save(ticket);
 
-        rowWithLeastCount.setCount(rowWithLeastCount.getCount()+1);
-        ticketCountRepo.save(rowWithLeastCount);
+        //memberWithLeastCount.setCount(memberWithLeastCount.getCount()+1);
+        ticketCountRepo.incrementOrCreateCount(memberWithLeastCount.getId(), today);
 
-        return netOpsMember;
+        return memberWithLeastCount;
     }
 }

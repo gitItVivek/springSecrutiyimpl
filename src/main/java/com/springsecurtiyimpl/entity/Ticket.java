@@ -23,6 +23,7 @@ public class Ticket {
     private String status; // OPEN, CLOSED
 
     @ManyToOne
+    @JoinColumn(name = "created_by_id")
     private User createdBy;
 
     @ManyToOne

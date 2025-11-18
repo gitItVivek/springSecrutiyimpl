@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "ticket_count")
+@Table(name = "ticket_count",uniqueConstraints = @UniqueConstraint(columnNames = {"net_ops_member_id", "date"}))
 public class TicketCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class TicketCount {
     private LocalDate date;
 
     @ManyToOne
-    @JoinTable(name = "netOps_member_id")
+    @JoinColumn(name = "netOps_member_id")
     private NetOpsMember netOpsMember;
 
 }
